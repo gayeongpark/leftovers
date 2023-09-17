@@ -17,23 +17,24 @@ export default function Logo() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: "center",
-        justifyContent: "flex-start", // Align content at the top
-        paddingTop: 50, // Add top padding to create space at the top
-        width: "100%",
-        height: "100%",
-      },
-      logoContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-      },
-      logoImage: {
-        alignItems: "center",
-        width: 50,
-        height: 50,
-      },
-      logoText: {
-        marginLeft: 10, // Add left margin to separate the two images
-      },
+  container: {
+    alignItems: "center",
+    justifyContent: "flex-start", // Align content at the top
+    padding: 50, // Add top padding to create space at the top
+    width: "100%",
+    height: "100%",
+  },
+  logoContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoImage: {
+    alignItems: "center",
+    width: 50,
+    height: 50,
+  },
+  logoText: {
+    alignItems: "center",
+  },
 });

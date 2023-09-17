@@ -6,8 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import Logo from "../components/Logo";
 
 export default function Signup() {
@@ -16,6 +16,9 @@ export default function Signup() {
   const [email, setEmail] = useState(""); // State to store the email input
   const [password, setPassword] = useState(""); // State to store the password input
   const [password2, setPassword2] = useState(""); // State to store the password input
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPassword2Visible, setIsPassword2Visible] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSignup = () => {
     // Implement your login logic here using 'email' and 'password' states
@@ -24,11 +27,53 @@ export default function Signup() {
     console.log("Email:", email);
     console.log("Password:", password);
     console.log("Password2:", password2);
+    if (!email || !password || !password2) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (password !== password2) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    // Additional validation can be added here, such as checking email format, password strength, etc.
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Invalid email format");
+      return;
+    }
+
+    // Password validation (at least one special character and one number)
+    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).*$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password should contain at least one special character and one number"
+      );
+      return;
+    }
+    // If all validations pass, you can proceed with signup logic here
+    // For example, you can make an API request to register the user
+
+    // Reset error state
+    setError("");
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+  const togglePassword2Visibility = () => {
+    setIsPassword2Visible(!isPassword2Visible);
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      <Logo/>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="height"
+      keyboardVerticalOffset={100} // Adjust this value to your needs
+      enabled
+    >
+      <Logo />
       <View style={styles.container2}>
         <Text style={styles.title}>Join Us</Text>
         <TextInput
@@ -49,23 +94,48 @@ export default function Signup() {
           onChangeText={(text) => setEmail(text)}
           value={email}
         />
-         <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirme Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setPassword2(text)}
-          value={password2}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            secureTextEntry={!isPasswordVisible}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+          />
+          <TouchableOpacity
+            onPress={togglePasswordVisibility}
+            style={styles.eyeIcon}
+          >
+            <Ionicons
+              name={isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+              size={24}
+              color="#ccc"
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            secureTextEntry={!isPassword2Visible}
+            onChangeText={(text) => setPassword2(text)}
+            value={password2}
+          />
+          <TouchableOpacity
+            onPress={togglePassword2Visibility}
+            style={styles.eyeIcon}
+          >
+            <Ionicons
+              name={isPassword2Visible ? "eye-off-outline" : "eye-outline"}
+              size={24}
+              color="#ccc"
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={handleSignup} style={styles.button}>
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
     </KeyboardAvoidingView>
   );
@@ -74,6 +144,8 @@ export default function Signup() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fdd605",
+    width: "100%",
+    height: "100%",
   },
   container2: {
     backgroundColor: "#fff",
@@ -87,7 +159,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 29,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -95,7 +167,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#000",
     marginBottom: 20,
   },
   button: {
@@ -140,5 +212,24 @@ const styles = StyleSheet.create({
   signup: {
     fontWeight: "bold",
     padding: 15,
+  },
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: "#000",
+    marginBottom: 20,
+  },
+  passwordInput: {
+    flex: 1,
+    padding: 10,
+  },
+  eyeIcon: {
+    paddingRight: 10,
+  },
+  errorText: {
+    color: "red",
+    margin: 10,
   },
 });

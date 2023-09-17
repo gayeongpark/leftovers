@@ -5,22 +5,23 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation from React Navigation
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 
 export default function Login() {
-  const navigation = useNavigation<any>(); // Initialize navigation
+  const navigation = useNavigation<any>();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleLogin = () => {
     // Implement your login logic here using 'email' and 'password' states
     console.log("Email:", email);
     console.log("Password:", password);
+
   };
 
   const handleGoogleLogin = () => {
@@ -28,31 +29,41 @@ export default function Login() {
     // This function will be called when the Google Login button is pressed
   };
 
-  const handleForgotPassword = () => {
-    // Implement the logic for handling forgot password
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   return (
-    <KeyboardAvoidingView 
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    style={styles.container}>
+    <View style={styles.container}>
       <Logo />
       <View style={styles.container2}>
-        {/* <Logo style={styles.logo}/> */}
-        <Text style={styles.title}>Ready to save leftovers</Text>
+        <Text style={styles.title}>Ready to save leftovers?</Text>
         <TextInput
           style={styles.input}
           placeholder="Email"
+          autoFocus={true}
           onChangeText={(text) => setEmail(text)}
           value={email}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            secureTextEntry={!isPasswordVisible}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+          />
+          <TouchableOpacity
+            onPress={togglePasswordVisibility}
+            style={styles.eyeIcon}
+          >
+            <Ionicons
+              name={isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+              size={24}
+              color="#ccc"
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
@@ -64,20 +75,20 @@ export default function Login() {
         </TouchableOpacity>
         <View style={styles.bottomButtonsContainer}>
           <TouchableOpacity
-            onPress={handleForgotPassword}
+            onPress={() => navigation.navigate("ForgotPassword")}
             style={styles.forgotPassword}
           >
-            <Text style={styles.bottomButtonText}>Forgot Password</Text>
+            <Text style={styles.bottomButtonText}>Forgot password</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("Signup")}
             style={styles.signup}
           >
-            <Text style={styles.bottomButtonText}>Signup</Text>
+            <Text style={styles.bottomButtonText}>Create account</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -97,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 29,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -105,8 +116,23 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#000",
     marginBottom: 20,
+  },
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: "#000",
+    marginBottom: 20,
+  },
+  passwordInput: {
+    flex: 1,
+    padding: 10,
+  },
+  eyeIcon: {
+    padding: 10,
   },
   button: {
     backgroundColor: "#fdd605",
@@ -135,8 +161,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bottomButtonsContainer: {
-    flexDirection: "column", // Arrange buttons horizontally
-    justifyContent: "space-between", // Space evenly between buttons
+    flexDirection: "column",
+    justifyContent: "space-between",
     width: "100%",
     marginTop: 10,
   },
@@ -146,13 +172,11 @@ const styles = StyleSheet.create({
   forgotPassword: {
     fontWeight: "bold",
     padding: 15,
-    fontSize: 16,
+    fontSize: 20,
   },
   signup: {
     fontWeight: "bold",
     padding: 15,
-    fontSize: 16,
+    fontSize: 20,
   },
 });
-
-// export default Login;
