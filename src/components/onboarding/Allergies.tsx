@@ -4,7 +4,7 @@ import React from 'react'
 export default function Allergies() {
   return (
     <View>
-      <Text>Allergies</Text>
+      <Text>This is Allergies</Text>
     </View>
   )
 }

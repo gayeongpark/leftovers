@@ -4,7 +4,9 @@ import React from 'react'
 export default function Diet() {
   return (
     <View>
-      <Text>Diet</Text>
+      <Text>
+        This is diet page.
+      </Text>
     </View>
   )
 }

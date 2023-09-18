@@ -4,7 +4,7 @@ import React from 'react'
 export default function CookPerference() {
   return (
     <View>
-      <Text>CookPerference</Text>
+      <Text>This is CookPerference page</Text>
     </View>
   )
 }

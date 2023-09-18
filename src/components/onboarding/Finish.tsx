@@ -4,7 +4,7 @@ import React from 'react'
 export default function Finish() {
   return (
     <View>
-      <Text>Finish</Text>
+      <Text>This is Finish page</Text>
     </View>
   )
 }
