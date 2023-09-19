@@ -13,9 +13,9 @@ import Logo from "../components/Logo";
 export default function Signup() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [email, setEmail] = useState(""); // State to store the email input
+  const [password, setPassword] = useState(""); // State to store the password input
+  const [password2, setPassword2] = useState(""); // State to store the password input
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
@@ -70,7 +70,7 @@ export default function Signup() {
     <KeyboardAvoidingView
       style={styles.container}
       behavior="height"
-      keyboardVerticalOffset={100}
+      keyboardVerticalOffset={100} // Adjust this value to your needs
       enabled
     >
       <Logo />
