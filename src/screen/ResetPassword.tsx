@@ -10,40 +10,33 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 
-export default function Login() {
+export default function ResetPassword() {
   const navigation = useNavigation<any>();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); // State to store the password input
+  const [password2, setPassword2] = useState(""); // State to store the password input
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const handleLogin = () => {
-    // Implement your login logic here using 'email' and 'password' states
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
-
-  const handleGoogleLogin = () => {
-    // Implement your Google login logic here
-    // This function will be called when the Google Login button is pressed
-  };
+  const [isPassword2Visible, setIsPassword2Visible] = useState(false);
+  const [error, setError] = useState("");
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
+  };
+  const togglePassword2Visibility = () => {
+    setIsPassword2Visible(!isPassword2Visible);
+  };
+
+  const handleNext = () => {
+    if (password !== password2) {
+      setError("Passwords do not match");
+      return;
+    }
   };
 
   return (
     <View style={styles.container}>
       <Logo />
       <View style={styles.container2}>
-        <Text style={styles.title}>Ready to save leftovers?</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          autoFocus={true}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
+        <Text style={styles.title}>Reset your password</Text>
         <View style={styles.passwordContainer}>
           <TextInput
             style={styles.passwordInput}
@@ -63,29 +56,29 @@ export default function Login() {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleGoogleLogin}
-          style={styles.googleButton}
-        >
-          <Text style={styles.googleButtonText}>Login with Google</Text>
-        </TouchableOpacity>
-        <View style={styles.bottomButtonsContainer}>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirm Password"
+            secureTextEntry={!isPassword2Visible}
+            onChangeText={(text) => setPassword2(text)}
+            value={password2}
+          />
           <TouchableOpacity
-            onPress={() => navigation.navigate("ForgotPassword")}
-            style={styles.forgotPassword}
+            onPress={togglePassword2Visibility}
+            style={styles.eyeIcon}
           >
-            <Text style={styles.bottomButtonText}>Forgot password</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Signup")}
-            style={styles.signup}
-          >
-            <Text style={styles.bottomButtonText}>Create account</Text>
+            <Ionicons
+              name={isPassword2Visible ? "eye-outline" : "eye-off-outline"}
+              size={24}
+              color="#ccc"
+            />
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={handleNext} style={styles.button}>
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
     </View>
   );
@@ -131,7 +124,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   eyeIcon: {
-    padding: 10,
+    paddingRight: 10,
   },
   button: {
     backgroundColor: "#fdd605",
@@ -145,37 +138,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
-  googleButton: {
-    borderColor: "#fdd605",
-    borderWidth: 2,
-    padding: 15,
-    borderRadius: 5,
-    width: "100%",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  googleButtonText: {
-    color: "black",
-    fontWeight: "600",
-    fontSize: 16,
-  },
-  bottomButtonsContainer: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-    width: "100%",
-    marginTop: 10,
-  },
-  bottomButtonText: {
-    fontWeight: "bold",
-  },
-  forgotPassword: {
-    fontWeight: "bold",
-    padding: 15,
-    fontSize: 20,
-  },
-  signup: {
-    fontWeight: "bold",
-    padding: 15,
-    fontSize: 20,
+  errorText: {
+    color: "red",
+    margin: 10,
   },
 });

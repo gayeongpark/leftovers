@@ -6,16 +6,20 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
 
 export default function Signup() {
+  const navigation = useNavigation<any>();
+
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState(""); // State to store the email input
-  const [password, setPassword] = useState(""); // State to store the password input
-  const [password2, setPassword2] = useState(""); // State to store the password input
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
@@ -107,7 +111,7 @@ export default function Signup() {
             style={styles.eyeIcon}
           >
             <Ionicons
-              name={isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+              name={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
               size={24}
               color="#ccc"
             />
@@ -126,15 +130,22 @@ export default function Signup() {
             style={styles.eyeIcon}
           >
             <Ionicons
-              name={isPassword2Visible ? "eye-off-outline" : "eye-outline"}
+              name={isPassword2Visible ? "eye-outline" : "eye-off-outline"}
               size={24}
               color="#ccc"
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleSignup} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ConfirmEmail")}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
+        <Text style={styles.buttonTextForTerms}>
+          By creating account, you confirm that you accept our Terms of Use and
+          Privacy{" "}
+        </Text>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
     </KeyboardAvoidingView>
@@ -182,37 +193,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
-  googleButton: {
-    borderColor: "#fdd605",
-    borderWidth: 2,
-    padding: 15,
-    borderRadius: 5,
-    width: "100%",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  googleButtonText: {
-    color: "black",
-    fontWeight: "600",
-    fontSize: 16,
-  },
-  bottomButtonsContainer: {
-    flexDirection: "column", // Arrange buttons horizontally
-    justifyContent: "space-between", // Space evenly between buttons
-    width: "100%",
-    marginTop: 10,
-  },
-  bottomButtonText: {
-    fontWeight: "bold",
-  },
-  forgotPassword: {
-    fontWeight: "bold",
-    padding: 15,
-  },
-  signup: {
-    fontWeight: "bold",
-    padding: 15,
-  },
   passwordContainer: {
     width: "100%",
     flexDirection: "row",
@@ -230,6 +210,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    margin: 10,
+    // margin: 8,
+  },
+  buttonTextForTerms: {
+    paddingTop: 15,
+    fontSize: 12,
   },
 });

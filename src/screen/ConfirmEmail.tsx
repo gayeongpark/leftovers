@@ -9,30 +9,26 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 
-export default function ForgotPassword() {
+export default function ConfirmEmail() {
   const navigation = useNavigation<any>();
-
-  const [email, setEmail] = useState("");
-
-  // const handleNext = () => {
-  //   // Implement your login logic here using 'email' and 'password' states
-  //   console.log("Email:", email);
-  // };
 
   return (
     <View style={styles.container}>
       <Logo />
       <View style={styles.container2}>
-        <Text style={styles.title}>Forgot password?</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          autoFocus={true}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate("ResetPassword")} style={styles.button}>
-          <Text style={styles.buttonText}>Next</Text>
+        <Text style={styles.title}>Confirm your email</Text>
+        <Text style={styles.text}>
+          please check your email inbox to confirm your email address. If not,
+          please click the resend button below.
+        </Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Resend</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          style={styles.GoToLoginButton}
+        >
+          <Text style={styles.GoToLoginButtonText}>Go to Login</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -59,12 +55,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
   },
-  input: {
+  text: {
+    flexDirection: "column",
+    justifyContent: "space-around",
     width: "100%",
     padding: 10,
-    borderBottomWidth: 1,
-    borderColor: "#000",
-    marginBottom: 20,
   },
   button: {
     backgroundColor: "#fdd605",
@@ -75,6 +70,20 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff", // White text color
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  GoToLoginButton: {
+    borderColor: "#fdd605",
+    borderWidth: 2,
+    padding: 15,
+    borderRadius: 5,
+    width: "100%",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  GoToLoginButtonText: {
+    color: "black",
     fontWeight: "600",
     fontSize: 16,
   },
