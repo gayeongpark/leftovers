@@ -6,6 +6,7 @@ import Signup from "./src/screen/Signup";
 import ForgotPassword from "./src/screen/ForgotPassword";
 import ResetPassword from "./src/screen/ResetPassword";
 import ConfirmEmail from "./src/screen/ConfirmEmail";
+import Onboarding from "./src/screen/Onboarding";
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,11 @@ export default function App() {
         <Stack.Screen
           name="ConfirmEmail"
           component={ConfirmEmail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Onboarding"
+          component={Onboarding}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -58,7 +58,7 @@ export default function Signup() {
     }
     // If all validations pass, you can proceed with signup logic here
     // For example, you can make an API request to register the user
-
+    navigation.navigate("ConfirmEmail");
     // Reset error state
     setError("");
   };
@@ -136,10 +136,7 @@ export default function Signup() {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ConfirmEmail")}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={handleSignup} style={styles.button}>
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
         <Text style={styles.buttonTextForTerms}>

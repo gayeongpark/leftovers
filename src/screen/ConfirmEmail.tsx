@@ -11,7 +11,16 @@ import Logo from "../../src/components/Logo";
 
 export default function ConfirmEmail() {
   const navigation = useNavigation<any>();
+  const [error, setError] = useState("");
 
+  const [number, setNumber] = useState("");
+  const handleEmailConfirm = () => {
+    if (number.length > 4) {
+      setError("The number should be 4 digits");
+      return;
+    }
+    navigation.navigate("Onboarding");
+  };
   return (
     <View style={styles.container}>
       <Logo />
@@ -21,15 +30,20 @@ export default function ConfirmEmail() {
           please check your email inbox to confirm your email address. If not,
           please click the resend button below.
         </Text>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Resend</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email verfication number"
+          autoFocus={true}
+          onChangeText={(number) => setNumber(number)}
+          value={number}
+        />
+        <TouchableOpacity onPress={handleEmailConfirm} style={styles.button}>
+          <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Login")}
-          style={styles.GoToLoginButton}
-        >
-          <Text style={styles.GoToLoginButtonText}>Go to Login</Text>
+        <TouchableOpacity style={styles.GoToLoginButton}>
+          <Text style={styles.GoToLoginButtonText}>Resend</Text>
         </TouchableOpacity>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
     </View>
   );
@@ -86,5 +100,16 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "600",
     fontSize: 16,
+  },
+  input: {
+    width: "100%",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: "#000",
+    marginBottom: 20,
+  },
+  errorText: {
+    color: "red",
+    margin: 8,
   },
 });
