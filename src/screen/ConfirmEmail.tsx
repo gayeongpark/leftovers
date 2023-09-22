@@ -19,8 +19,12 @@ export default function ConfirmEmail() {
       setError("The number should be 4 digits");
       return;
     }
-    navigation.navigate("Onboarding");
+    try {
+      navigation.navigate("Onboarding");
+    } catch {}
   };
+
+  const handleResend = () => {};
   return (
     <View style={styles.container}>
       <Logo />
@@ -40,7 +44,12 @@ export default function ConfirmEmail() {
         <TouchableOpacity onPress={handleEmailConfirm} style={styles.button}>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.GoToLoginButton}>
+        <TouchableOpacity
+          onPress={() => {
+            handleResend;
+          }}
+          style={styles.GoToLoginButton}
+        >
           <Text style={styles.GoToLoginButtonText}>Resend</Text>
         </TouchableOpacity>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}

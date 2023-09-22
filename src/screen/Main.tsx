@@ -4,7 +4,7 @@ import React from 'react'
 export default function Main() {
   return (
     <View>
-      <Text>Main</Text>
+      <Text>Main is main page</Text>
     </View>
   )
 }

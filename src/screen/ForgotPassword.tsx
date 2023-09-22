@@ -31,7 +31,10 @@ export default function ForgotPassword() {
           onChangeText={(text) => setEmail(text)}
           value={email}
         />
-        <TouchableOpacity onPress={() => navigation.navigate("ResetPassword")} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ResetPassword")}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>

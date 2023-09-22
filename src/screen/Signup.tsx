@@ -11,6 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
+import axios from "axios";
 
 export default function Signup() {
   const navigation = useNavigation<any>();
@@ -24,43 +25,64 @@ export default function Signup() {
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSignup = () => {
-    // Implement your login logic here using 'email' and 'password' states
-    console.log("Firstname:", firstname);
-    console.log("Lastname:", lastname);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Password2:", password2);
-    if (!email || !password || !password2) {
-      setError("All fields are required");
-      return;
-    }
+  // const handleSignup = () => {
 
-    if (password !== password2) {
-      setError("Passwords do not match");
-      return;
-    }
+    
+  //   if (!email || !password || !password2) {
+  //     setError("All fields are required");
+  //     return;
+  //   }
 
-    // Additional validation can be added here, such as checking email format, password strength, etc.
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Invalid email format");
-      return;
-    }
+  //   if (password !== password2) {
+  //     setError("Passwords do not match");
+  //     return;
+  //   }
 
-    // Password validation (at least one special character and one number)
-    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).*$/;
-    if (!passwordRegex.test(password)) {
-      setError(
-        "Password should contain at least one special character and one number"
-      );
-      return;
+  //   // Additional validation can be added here, such as checking email format, password strength, etc.
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   if (!emailRegex.test(email)) {
+  //     setError("Invalid email format");
+  //     return;
+  //   }
+
+  //   // Password validation (at least one special character and one number)
+  //   const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).*$/;
+  //   if (!passwordRegex.test(password)) {
+  //     setError(
+  //       "Password should contain at least one special character and one number"
+  //     );
+  //     return;
+  //   }
+  //   // If all validations pass, you can proceed with signup logic here
+  //   // For example, you can make an API request to register the user
+  //   navigation.navigate("ConfirmEmail");
+  //   // Reset error state
+  //   setError("");
+  // };
+
+  const handleSignup = async () => {
+    try {
+      const response = await axios.post('http://localhost:8000/auth/signup', {
+        email,
+        password,
+        password2,
+        firstname,
+        lastname,
+      });
+  
+      // Check the response from the server
+      if (response.status === 200) {
+        // Signup was successful, navigate to the confirmation screen
+        navigation.navigate('ConfirmEmail');
+      } else {
+        // Handle server error or validation errors
+        console.error('Server error:', response.data.error);
+        setError(response.data.error); // Set error message to display to the user
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred. Please try again later.');
     }
-    // If all validations pass, you can proceed with signup logic here
-    // For example, you can make an API request to register the user
-    navigation.navigate("ConfirmEmail");
-    // Reset error state
-    setError("");
   };
 
   const togglePasswordVisibility = () => {
