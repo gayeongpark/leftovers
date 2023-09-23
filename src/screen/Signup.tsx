@@ -25,63 +25,54 @@ export default function Signup() {
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
 
-  // const handleSignup = () => {
-
-    
-  //   if (!email || !password || !password2) {
-  //     setError("All fields are required");
-  //     return;
-  //   }
-
-  //   if (password !== password2) {
-  //     setError("Passwords do not match");
-  //     return;
-  //   }
-
-  //   // Additional validation can be added here, such as checking email format, password strength, etc.
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   if (!emailRegex.test(email)) {
-  //     setError("Invalid email format");
-  //     return;
-  //   }
-
-  //   // Password validation (at least one special character and one number)
-  //   const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).*$/;
-  //   if (!passwordRegex.test(password)) {
-  //     setError(
-  //       "Password should contain at least one special character and one number"
-  //     );
-  //     return;
-  //   }
-  //   // If all validations pass, you can proceed with signup logic here
-  //   // For example, you can make an API request to register the user
-  //   navigation.navigate("ConfirmEmail");
-  //   // Reset error state
-  //   setError("");
-  // };
-
   const handleSignup = async () => {
+    if (!email || !password || !password2) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (password !== password2) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    // Additional validation can be added here, such as checking email format, password strength, etc.
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Invalid email format");
+      return;
+    }
+
+    // Password validation (at least one special character and one number)
+    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).*$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password should contain at least one special character and one number"
+      );
+      return;
+    }
+
     try {
-      const response = await axios.post('http://localhost:8000/auth/signup', {
+      const response = await axios.post("http://localhost:8000/auth/signup", {
         email,
         password,
         password2,
         firstname,
         lastname,
       });
-  
+
       // Check the response from the server
       if (response.status === 200) {
         // Signup was successful, navigate to the confirmation screen
-        navigation.navigate('ConfirmEmail');
+        navigation.navigate("ConfirmEmail", { email: email });
       } else {
         // Handle server error or validation errors
-        console.error('Server error:', response.data.error);
+        console.error("Server error:", response.data.error);
         setError(response.data.error); // Set error message to display to the user
       }
     } catch (error) {
-      console.error('Error:', error);
-      setError('An error occurred. Please try again later.');
+      console.error("Error:", error);
+      setError("An error occurred. Please try again later.");
     }
   };
 
