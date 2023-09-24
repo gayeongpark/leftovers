@@ -7,8 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
+import axios from "axios";
+
+// Define the type for route parameters
+type RouteParams = {
+  number: number;
+};
 
 export default function ResetPassword() {
   const navigation = useNavigation<any>();
@@ -17,6 +23,9 @@ export default function ResetPassword() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const route = useRoute();
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -25,10 +34,32 @@ export default function ResetPassword() {
     setIsPassword2Visible(!isPassword2Visible);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    const { number } = route.params as RouteParams;
+
     if (password !== password2) {
       setError("Passwords do not match");
       return;
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/auth/resetPassword/${number}`,
+        {
+          password,
+          password2,
+        }
+      );
+
+      if (response.status === 200) {
+        setSuccess(response.data.message); // Reset any previous errors
+        // Password updated successfully, navigate to a success screen or login
+        navigation.navigate("Login"); // Replace with the appropriate screen
+      } else {
+        setError(response.data);
+      }
+    } catch (error) {
+      setError("Password update failed. An error occurred.");
     }
   };
 
@@ -79,6 +110,7 @@ export default function ResetPassword() {
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        {success ? <Text style={styles.errorText}>{success}</Text> : null}
       </View>
     </View>
   );

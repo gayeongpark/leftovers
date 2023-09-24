@@ -6,79 +6,34 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 import axios from "axios";
 
-// Define the type for route parameters
-type RouteParams = {
-  email: string;
-};
-
-export default function ConfirmEmail() {
+export default function EmailVerificationForResetEmail() {
+  const navigation = useNavigation<any>();
   const [number, setNumber] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  // Use useRoute with the specified type
-  const navigation = useNavigation<any>();
-  const route = useRoute();
-
-  // Access the email value from route parameters
-
-  // const email = route.params; // Access the email value passed from the previous screen
-  // console.log(email);
 
   const handleEmailConfirm = async () => {
-    if (number.length !== 4) {
-      setError("The number should be 4 digits");
-      return;
-    }
-
     try {
       const response = await axios.get(
-        `http://localhost:8000/auth/verifyEmail/${number}`
+        `http://localhost:8000/auth/verifyEmailToResetPassword/${number}`
       );
 
       if (response.status === 200) {
-        // Email confirmed successfully, navigate to the next screen
         setSuccess(response.data.message);
-        navigation.navigate("Login");
-      } else if (response.status === 404) {
-        setError(response.data);
+        navigation.navigate("ResetPassword", { number: number });
       } else {
         setError(response.data);
       }
     } catch (error) {
-      console.error("Error confirming email:", error);
-      setError("An error occurred while confirming email.");
+      setError("Verification failed. An error occurred.");
     }
   };
 
-  const handleResend = async () => {
-    const { email } = route.params as RouteParams;
-    console.log(email);
-
-    try {
-      // Send a POST request to the backend to resend the validation code
-      const response = await axios.post(
-        `http://localhost:8000/auth/resendValidationCode/${email}`,
-        {
-          email: email,
-        }
-      );
-
-      // Check the response from the server
-      if (response.status === 200) {
-        // Resending was successful
-        setSuccess(response.data.message);
-      } else {
-        // Handle other response statuses or errors from the server
-        setError(response.data.error);
-      }
-    } catch (error) {
-      console.error("Error resending validation code:", error);
-    }
-  };
+  const handleResend = () => {};
 
   return (
     <View style={styles.container}>

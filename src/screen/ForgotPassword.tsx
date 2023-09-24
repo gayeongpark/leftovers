@@ -8,16 +8,36 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
+import axios from "axios";
 
 export default function ForgotPassword() {
   const navigation = useNavigation<any>();
 
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  // const handleNext = () => {
-  //   // Implement your login logic here using 'email' and 'password' states
-  //   console.log("Email:", email);
-  // };
+  const handleNext = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/auth/forgotPassword", // Replace with your backend URL
+        { email }
+      );
+
+      if (response.status === 200) {
+        // console.log("Password reset email sent successfully");
+        // You can add navigation logic here to go to the next screen
+        setSuccess(response.data.message);
+        navigation.navigate("EmailVerificationForResetEmail");
+      } else {
+        setError(response.data);
+        // Handle the error, display an error message, or take appropriate action
+      }
+    } catch (error) {
+      setError("Networing error");
+      // Handle the network error or other exceptions
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -31,10 +51,7 @@ export default function ForgotPassword() {
           onChangeText={(text) => setEmail(text)}
           value={email}
         />
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ResetPassword")}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={handleNext} style={styles.button}>
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
       </View>

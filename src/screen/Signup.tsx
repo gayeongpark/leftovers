@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
 import axios from "axios";
+import { showMessage } from "react-native-flash-message";
 
 export default function Signup() {
   const navigation = useNavigation<any>();
@@ -24,6 +25,7 @@ export default function Signup() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
+  // const [success, setSuccess] = useState("");
 
   const handleSignup = async () => {
     if (!email || !password || !password2) {
@@ -60,18 +62,25 @@ export default function Signup() {
         firstname,
         lastname,
       });
+      // console.log(response.data);
 
       // Check the response from the server
       if (response.status === 200) {
         // Signup was successful, navigate to the confirmation screen
+        showMessage({
+          message: response.data.message,
+          // color: "white",
+          // backgroundColor: "black",
+          type: "success",
+        });
         navigation.navigate("ConfirmEmail", { email: email });
       } else {
         // Handle server error or validation errors
-        console.error("Server error:", response.data.error);
+        // console.error("Server error:", response.data.error);
         setError(response.data.error); // Set error message to display to the user
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       setError("An error occurred. Please try again later.");
     }
   };
@@ -87,7 +96,7 @@ export default function Signup() {
     <KeyboardAvoidingView
       style={styles.container}
       behavior="height"
-      keyboardVerticalOffset={100} // Adjust this value to your needs
+      keyboardVerticalOffset={265} // Adjust this value to your needs
       enabled
     >
       <Logo />
@@ -164,6 +173,7 @@ export default function Signup() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fdd605",
     width: "100%",
     height: "100%",

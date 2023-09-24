@@ -1,12 +1,15 @@
 import React from "react";
+import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import FlashMessage from "react-native-flash-message";
 import Login from "./src/screen/Login";
 import Signup from "./src/screen/Signup";
 import ForgotPassword from "./src/screen/ForgotPassword";
 import ResetPassword from "./src/screen/ResetPassword";
 import ConfirmEmail from "./src/screen/ConfirmEmail";
 import Onboarding from "./src/screen/Onboarding";
+import EmailVerificationForResetEmail from "./src/screen/EmailVerificationForResetEmail";
 
 const Stack = createStackNavigator();
 
@@ -44,7 +47,13 @@ export default function App() {
           component={Onboarding}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="EmailVerificationForResetEmail"
+          component={EmailVerificationForResetEmail}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }
