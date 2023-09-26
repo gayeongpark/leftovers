@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff", // White text color
+    color: "#fff",
     fontWeight: "600",
     fontSize: 16,
   },

@@ -18,8 +18,8 @@ type RouteParams = {
 
 export default function ResetPassword() {
   const navigation = useNavigation<any>();
-  const [password, setPassword] = useState(""); // State to store the password input
-  const [password2, setPassword2] = useState(""); // State to store the password input
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
@@ -52,9 +52,9 @@ export default function ResetPassword() {
       );
 
       if (response.status === 200) {
-        setSuccess(response.data.message); // Reset any previous errors
-        // Password updated successfully, navigate to a success screen or login
-        navigation.navigate("Login"); // Replace with the appropriate screen
+        setSuccess(response.data.message);
+
+        navigation.navigate("Login"); 
       } else {
         setError(response.data);
       }

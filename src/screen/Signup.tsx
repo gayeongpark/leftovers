@@ -13,10 +13,10 @@ import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import {API_URL} from "@env"
 
 export default function Signup() {
   const navigation = useNavigation<any>();
-
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -25,7 +25,6 @@ export default function Signup() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPassword2Visible, setIsPassword2Visible] = useState(false);
   const [error, setError] = useState("");
-  // const [success, setSuccess] = useState("");
 
   const handleSignup = async () => {
     if (!email || !password || !password2) {
@@ -38,14 +37,12 @@ export default function Signup() {
       return;
     }
 
-    // Additional validation can be added here, such as checking email format, password strength, etc.
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError("Invalid email format");
       return;
     }
 
-    // Password validation (at least one special character and one number)
     const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).*$/;
     if (!passwordRegex.test(password)) {
       setError(
@@ -55,18 +52,24 @@ export default function Signup() {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/auth/signup", {
-        email,
-        password,
-        password2,
-        firstname,
-        lastname,
-      });
+      const response = await axios.post(
+        "http://${API_URL}:8000/auth/signup",
+        {
+          email,
+          password,
+          password2,
+          firstname,
+          lastname,
+        },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
       // console.log(response.data);
 
-      // Check the response from the server
       if (response.status === 200) {
-        // Signup was successful, navigate to the confirmation screen
         showMessage({
           message: response.data.message,
           // color: "white",
@@ -75,12 +78,11 @@ export default function Signup() {
         });
         navigation.navigate("ConfirmEmail", { email: email });
       } else {
-        // Handle server error or validation errors
         // console.error("Server error:", response.data.error);
-        setError(response.data.error); // Set error message to display to the user
+        setError(response.data.error);
       }
     } catch (error) {
-      // console.error("Error:", error);
+      console.error("Error:", error);
       setError("An error occurred. Please try again later.");
     }
   };
@@ -96,7 +98,7 @@ export default function Signup() {
     <KeyboardAvoidingView
       style={styles.container}
       behavior="height"
-      keyboardVerticalOffset={265} // Adjust this value to your needs
+      keyboardVerticalOffset={250}
       enabled
     >
       <Logo />
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff", // White text color
+    color: "#fff",
     fontWeight: "600",
     fontSize: 16,
   },

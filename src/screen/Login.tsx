@@ -18,14 +18,12 @@ export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleLogin = () => {
-    // Implement your login logic here using 'email' and 'password' states
+
     console.log("Email:", email);
     console.log("Password:", password);
   };
 
   const handleGoogleLogin = () => {
-    // Implement your Google login logic here
-    // This function will be called when the Google Login button is pressed
   };
 
   const togglePasswordVisibility = () => {
@@ -141,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff", // White text color
+    color: "#fff",
     fontWeight: "600",
     fontSize: 16,
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+// import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import FlashMessage from "react-native-flash-message";
@@ -57,13 +57,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fdd605",
-//     alignItems: "center",
-//     width: "100%",
-//     height: "100%",
-//   },
-// });

@@ -20,22 +20,18 @@ export default function ForgotPassword() {
   const handleNext = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/auth/forgotPassword", // Replace with your backend URL
+        "http://localhost:8000/auth/forgotPassword",
         { email }
       );
 
       if (response.status === 200) {
-        // console.log("Password reset email sent successfully");
-        // You can add navigation logic here to go to the next screen
         setSuccess(response.data.message);
         navigation.navigate("EmailVerificationForResetEmail");
       } else {
         setError(response.data);
-        // Handle the error, display an error message, or take appropriate action
       }
     } catch (error) {
       setError("Networing error");
-      // Handle the network error or other exceptions
     }
   };
 
