@@ -6,14 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
-import {API_URL} from "@env"
+import { API_URL } from "@env";
 
 export default function Signup() {
   const navigation = useNavigation<any>();
@@ -53,7 +52,7 @@ export default function Signup() {
 
     try {
       const response = await axios.post(
-        "http://${API_URL}:8000/auth/signup",
+        "http://10.0.7.131:8000/auth/signup",
         {
           email,
           password,

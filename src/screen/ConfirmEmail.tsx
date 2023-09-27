@@ -9,6 +9,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 import axios from "axios";
+import { showMessage } from "react-native-flash-message";
 
 type RouteParams = {
   email: string;
@@ -21,9 +22,6 @@ export default function ConfirmEmail() {
   const navigation = useNavigation<any>();
   const route = useRoute();
 
-  
-
-
   const handleEmailConfirm = async () => {
     if (number.length !== 4) {
       setError("The number should be 4 digits");
@@ -32,11 +30,21 @@ export default function ConfirmEmail() {
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/auth/verifyEmail/${number}`
+        `http://10.0.7.131:8000/auth/verifyEmail/${number}`,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
       );
 
       if (response.status === 200) {
-        setSuccess(response.data.message);
+        showMessage({
+          message: response.data.message,
+          // color: "white",
+          // backgroundColor: "black",
+          type: "success",
+        });
         navigation.navigate("Login");
       } else if (response.status === 404) {
         setError(response.data);
@@ -134,7 +142,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff", 
+    color: "#fff",
     fontWeight: "600",
     fontSize: 16,
   },

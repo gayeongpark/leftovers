@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
+import { showMessage } from "react-native-flash-message";
 import axios from "axios";
 
 export default function ForgotPassword() {
@@ -20,12 +21,22 @@ export default function ForgotPassword() {
   const handleNext = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/auth/forgotPassword",
-        { email }
+        "http://10.0.7.131:8000/auth/forgotPassword",
+        { email },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
       );
 
       if (response.status === 200) {
-        setSuccess(response.data.message);
+        showMessage({
+          message: response.data.message,
+          // color: "white",
+          // backgroundColor: "black",
+          type: "success",
+        });
         navigation.navigate("EmailVerificationForResetEmail");
       } else {
         setError(response.data);
