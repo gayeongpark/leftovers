@@ -9,22 +9,40 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../state/authAction";
+import { setCredentials } from "../../credentials";
+// import axios from "axios";
+// import { API_URL } from "@env";
 
 export default function Login() {
   const navigation = useNavigation<any>();
+  const dispatch = useDispatch<any>();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    try {
+      const response = await dispatch(loginUser(email, password));
 
-    console.log("Email:", email);
-    console.log("Password:", password);
+      // Assuming your loginUser action returns a response with accessToken and refreshToken
+      const { accessToken, refreshToken, userData } = response.data;
+
+      // Store credentials in AsyncStorage
+      await setCredentials({ accessToken, refreshToken, userData });
+
+      // Handle successful login here if needed
+      console.log("Login successful");
+      navigation.navigate("Main");
+    } catch (error) {
+      // Handle login error (e.g., show an error message)
+      console.error("Login error:", error);
+    }
   };
 
-  const handleGoogleLogin = () => {
-  };
+  const handleGoogleLogin = () => {};
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);

@@ -10,6 +10,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import { API_URL } from "@env";
 
 type RouteParams = {
   email: string;
@@ -30,7 +31,7 @@ export default function ConfirmEmail() {
 
     try {
       const response = await axios.get(
-        `http://10.0.7.131:8000/auth/verifyEmail/${number}`,
+        `http://${API_URL}:8000/auth/verifyEmail/${number}`,
         {
           headers: {
             "content-type": "application/json",
@@ -63,9 +64,14 @@ export default function ConfirmEmail() {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/auth/resendValidationCode/${email}`,
+        `http://${API_URL}:8000/auth/resendValidationCode/${email}`,
         {
           email: email,
+        },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
         }
       );
 

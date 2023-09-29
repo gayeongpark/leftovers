@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 import { showMessage } from "react-native-flash-message";
 import axios from "axios";
+import { API_URL } from "@env";
 
 export default function EmailVerificationForResetEmail() {
   const navigation = useNavigation<any>();
@@ -20,7 +21,7 @@ export default function EmailVerificationForResetEmail() {
   const handleEmailConfirm = async () => {
     try {
       const response = await axios.get(
-        `http://10.0.7.131:8000/auth/verifyEmailToResetPassword/${number}`,
+        `http://${API_URL}:8000/auth/verifyEmailToResetPassword/${number}`,
         {
           headers: {
             "content-type": "application/json",

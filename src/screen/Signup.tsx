@@ -26,6 +26,7 @@ export default function Signup() {
   const [error, setError] = useState("");
 
   const handleSignup = async () => {
+    // console.log(`${API_URL}`);
     if (!email || !password || !password2) {
       setError("All fields are required");
       return;
@@ -52,7 +53,7 @@ export default function Signup() {
 
     try {
       const response = await axios.post(
-        "http://10.0.7.131:8000/auth/signup",
+        `http://${API_URL}:8000/auth/signup`,
         {
           email,
           password,
@@ -66,7 +67,6 @@ export default function Signup() {
           },
         }
       );
-      // console.log(response.data);
 
       if (response.status === 200) {
         showMessage({

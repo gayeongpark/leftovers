@@ -11,6 +11,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
 import Logo from "../../src/components/Logo";
 import axios from "axios";
+import { API_URL } from "@env";
 
 // Define the type for route parameters
 type RouteParams = {
@@ -45,7 +46,7 @@ export default function ResetPassword() {
 
     try {
       const response = await axios.post(
-        `http://10.0.7.131:8000/auth/resetPassword/${number}`,
+        `http://${API_URL}:8000/auth/resetPassword/${number}`,
         {
           password,
           password2,
