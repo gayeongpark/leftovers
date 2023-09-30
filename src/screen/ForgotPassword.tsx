@@ -15,9 +15,9 @@ import { API_URL } from "@env";
 export default function ForgotPassword() {
   const navigation = useNavigation<any>();
 
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  // const [success, setSuccess] = useState<string>("");
 
   const handleNext = async () => {
     try {

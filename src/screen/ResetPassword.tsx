@@ -13,19 +13,18 @@ import Logo from "../../src/components/Logo";
 import axios from "axios";
 import { API_URL } from "@env";
 
-// Define the type for route parameters
 type RouteParams = {
   number: number;
 };
 
 export default function ResetPassword() {
   const navigation = useNavigation<any>();
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isPassword2Visible, setIsPassword2Visible] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [password, setPassword] = useState<string>("");
+  const [password2, setPassword2] = useState<string>("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isPassword2Visible, setIsPassword2Visible] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  // const [success, setSuccess] = useState<string>("");
 
   const route = useRoute();
 
@@ -122,7 +121,7 @@ export default function ResetPassword() {
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        {success ? <Text style={styles.errorText}>{success}</Text> : null}
+        {/* {success ? <Text style={styles.errorText}>{success}</Text> : null} */}
       </View>
     </View>
   );

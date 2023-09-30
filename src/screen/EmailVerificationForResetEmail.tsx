@@ -14,9 +14,9 @@ import { API_URL } from "@env";
 
 export default function EmailVerificationForResetEmail() {
   const navigation = useNavigation<any>();
-  const [number, setNumber] = useState("");
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
+  const [number, setNumber] = useState<string>("");
+  // const [success, setSuccess] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleEmailConfirm = async () => {
     try {
@@ -70,7 +70,7 @@ export default function EmailVerificationForResetEmail() {
           <Text style={styles.GoToLoginButtonText}>Resend</Text>
         </TouchableOpacity>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
-        {success ? <Text style={styles.errorText}>{success}</Text> : null}
+        {/* {success ? <Text style={styles.errorText}>{success}</Text> : null} */}
       </View>
     </View>
   );

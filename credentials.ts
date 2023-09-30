@@ -66,6 +66,7 @@ export async function getVerifiedKeys(keys: KeysType) {
 export async function setCredentials(keys: KeysType) {
   try {
     await AsyncStorage.setItem("keys", JSON.stringify(keys));
+    console.log("set credentials!");
   } catch (error) {
     // Handle the error here, e.g., by logging or displaying an error message
     console.error("Error setting credentials:", error);

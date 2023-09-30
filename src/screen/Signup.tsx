@@ -16,14 +16,14 @@ import { API_URL } from "@env";
 
 export default function Signup() {
   const navigation = useNavigation<any>();
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isPassword2Visible, setIsPassword2Visible] = useState(false);
-  const [error, setError] = useState("");
+  const [firstname, setFirstname] = useState<string>("");
+  const [lastname, setLastname] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [password2, setPassword2] = useState<string>("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isPassword2Visible, setIsPassword2Visible] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const handleSignup = async () => {
     // console.log(`${API_URL}`);

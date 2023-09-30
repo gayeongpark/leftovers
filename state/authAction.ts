@@ -3,18 +3,15 @@ import { Dispatch } from "redux";
 import { loginSuccess, logoutSuccess } from "./authSlice";
 import { API_URL } from "@env";
 
-// Define a type for the user data
 interface UserData {
   email: string;
   id: string;
-  // Add other user-related properties here
 }
 
-// Define a type for the authentication response
 interface AuthResponse {
   accessToken: string;
   refreshToken: string;
-  userData: UserData; // Use the UserData type here
+  userData: UserData;
 }
 
 export const loginUser =
@@ -33,19 +30,20 @@ export const loginUser =
         return response.data;
       }
     } catch (error) {
-      // Handle login error (e.g., show an error message)
       console.error("Login error:", error);
     }
   };
 
 export const logoutUser = () => async (dispatch: Dispatch) => {
   try {
-    // Optionally, send a request to your server to invalidate tokens
+    const response = await axios.post(`http://${API_URL}:8000/auth/logout`);
 
-    // Clear tokens and user info from Redux
-    dispatch(logoutSuccess());
+    if (response.status === 200) {
+      dispatch(logoutSuccess());
+    } else {
+      console.error("Logout failed. Server response:", response);
+    }
   } catch (error) {
-    // Handle logout error (e.g., show an error message)
     console.error("Logout error:", error);
   }
 };
