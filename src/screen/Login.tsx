@@ -6,16 +6,22 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
 import { useDispatch } from "react-redux";
+import { showMessage } from "react-native-flash-message";
 import { loginUser } from "../../state/authAction";
 
 export default function Login() {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch<any>();
-
+  const [error, setError] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -23,13 +29,23 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const response = await dispatch(loginUser(email, password));
-      // console.log(response);
+      console.log(response);
 
-      // console.log("Login successful");
-
-      navigation.navigate("Main", { screen: "Main" });
+      if (response) {
+        showMessage({
+          message: "Login successful",
+          type: "success",
+        });
+        navigation.navigate("Main");
+      } else {
+        showMessage({
+          message: "Login failed, Please try it again!",
+          type: "danger",
+        });
+      }
     } catch (error) {
       console.error("Login error:", error);
+      setError("An error occurred. Please try again later.");
     }
   };
 
@@ -94,6 +110,7 @@ export default function Login() {
           </TouchableOpacity>
         </View>
       </View>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
   );
 }
@@ -184,5 +201,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 15,
     fontSize: 20,
+  },
+  errorText: {
+    color: "red",
+    // margin: 8,
   },
 });

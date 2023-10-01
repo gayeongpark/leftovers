@@ -12,6 +12,7 @@ interface AuthResponse {
   accessToken: string;
   refreshToken: string;
   userData: UserData;
+  error: string;
 }
 
 export const loginUser =
@@ -22,9 +23,15 @@ export const loginUser =
         {
           email,
           password,
+        },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
         }
       );
-      if (response && response.data) {
+      console.log(response);
+      if (response.status === 200) {
         const { accessToken, refreshToken, userData } = response.data;
         dispatch(loginSuccess({ accessToken, refreshToken, userData }));
         return response.data;
@@ -36,7 +43,11 @@ export const loginUser =
 
 export const logoutUser = () => async (dispatch: Dispatch) => {
   try {
-    const response = await axios.post(`http://${API_URL}:8000/auth/logout`);
+    const response = await axios.post(`http://${API_URL}:8000/auth/logout`, {
+      headers: {
+        "content-type": "application/json",
+      },
+    });
 
     if (response.status === 200) {
       dispatch(logoutSuccess());
