@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start", // Align content at the top
     padding: 50, // Add top padding to create space at the top
     width: "100%",
-    height: "100%",
+    height: "80%",
   },
   logoContainer: {
     display: "flex",

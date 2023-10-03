@@ -30,7 +30,7 @@ export const loginUser =
           },
         }
       );
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         const { accessToken, refreshToken, userData } = response.data;
         dispatch(loginSuccess({ accessToken, refreshToken, userData }));

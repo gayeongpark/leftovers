@@ -29,7 +29,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const response = await dispatch(loginUser(email, password));
-      console.log(response);
+      // console.log(response);
 
       if (response) {
         showMessage({
