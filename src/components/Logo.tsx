@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 
 export default function Logo() {
   return (
@@ -19,15 +19,10 @@ export default function Logo() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "flex-start", // Align content at the top
-    padding: 50, // Add top padding to create space at the top
+    justifyContent: "flex-start",
+    padding: 50,
     width: "100%",
     height: "80%",
-  },
-  logoContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
   },
   logoImage: {
     alignItems: "center",

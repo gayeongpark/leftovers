@@ -174,7 +174,6 @@ export default function Signup() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fdd605",
     width: "100%",
     height: "100%",
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     position: "absolute",
     bottom: 0,
-    height: "75%",
+    height: "80%",
     width: "100%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

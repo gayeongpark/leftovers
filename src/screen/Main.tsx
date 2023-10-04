@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
@@ -16,7 +17,7 @@ export default function Main() {
   const dispatch = useDispatch<any>();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Logo />
       <View style={styles.container2}>
         <Text style={styles.title}>Let's save leftovers!</Text>
@@ -27,19 +28,21 @@ export default function Main() {
           <Text style={styles.googleButtonText}>Upload pictures</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fdd605",
+    height: "100%",
+    width: "100%",
   },
   container2: {
     backgroundColor: "#fff",
     position: "absolute",
     bottom: 0,
-    height: "75%",
+    height: "80%",
     width: "100%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
