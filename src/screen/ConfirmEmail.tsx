@@ -18,7 +18,6 @@ type RouteParams = {
 
 export default function ConfirmEmail() {
   const [number, setNumber] = useState<string>("");
-  // const [success, setSuccess] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigation = useNavigation<any>();
   const route = useRoute();
@@ -42,8 +41,6 @@ export default function ConfirmEmail() {
       if (response.status === 200) {
         showMessage({
           message: response.data.message,
-          // color: "white",
-          // backgroundColor: "black",
           type: "success",
         });
         navigation.navigate("Login");
