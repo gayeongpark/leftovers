@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  SafeAreaView
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -94,11 +95,11 @@ export default function Signup() {
   };
 
   return (
-    <KeyboardAvoidingView
+    <SafeAreaView
       style={styles.container}
-      behavior="height"
-      keyboardVerticalOffset={250}
-      enabled
+      // behavior="height"
+      // keyboardVerticalOffset={340}
+      // enabled
     >
       <Logo />
       <View style={styles.container2}>
@@ -168,7 +169,7 @@ export default function Signup() {
         </Text>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

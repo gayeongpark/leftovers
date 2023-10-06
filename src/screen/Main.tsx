@@ -17,7 +17,7 @@ export default function Main() {
   const dispatch = useDispatch<any>();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Logo />
       <View style={styles.container2}>
         <Text style={styles.title}>Let's save leftovers!</Text>
@@ -28,7 +28,7 @@ export default function Main() {
           <Text style={styles.googleButtonText}>Upload pictures</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

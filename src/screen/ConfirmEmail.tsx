@@ -57,6 +57,7 @@ export default function ConfirmEmail() {
 
   const handleResend = async () => {
     const { email } = route.params as RouteParams;
+    const URL = API_URL || 'localhost'
     console.log(email);
 
     try {
