@@ -6,11 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from '@react-native-google-signin/google-signin';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../../src/components/Logo";
@@ -36,7 +31,7 @@ export default function Login() {
           message: "Login successful",
           type: "success",
         });
-        navigation.navigate("Main");
+        navigation.navigate("MainScreen");
       } else {
         showMessage({
           message: "Login failed, Please try it again!",

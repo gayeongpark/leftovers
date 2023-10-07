@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-export default function Onboarding() {
+export default function Preferences() {
   return (
     <View>
-      <Text>This is Onboarding page</Text>
+      <Text>This is Preferences page</Text>
     </View>
   );
 }

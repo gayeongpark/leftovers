@@ -17,8 +17,8 @@ export default function Main() {
   const dispatch = useDispatch<any>();
 
   return (
-    <View style={styles.container}>
-      <Logo />
+    // <View style={styles.container}>
+    //   <Logo />
       <View style={styles.container2}>
         <Text style={styles.title}>Let's save leftovers!</Text>
         <TouchableOpacity style={styles.button}>
@@ -28,7 +28,7 @@ export default function Main() {
           <Text style={styles.googleButtonText}>Upload pictures</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    // </View>
   );
 }
 
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     position: "absolute",
     bottom: 0,
-    height: "80%",
+    height: "100%",
     width: "100%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

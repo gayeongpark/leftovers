@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { loginSuccess, logoutSuccess } from "./authSlice";
-import { API_URL } from "@env";
+import { API_URL, API_URL2 } from "@env";
 
 interface UserData {
   email: string;
@@ -18,8 +18,13 @@ interface AuthResponse {
 export const loginUser =
   (email: string, password: string) => async (dispatch: Dispatch) => {
     try {
+      let apiUrlToUse = API_URL;
+
+      if (API_URL2 && API_URL2.trim() !== "") {
+        apiUrlToUse = API_URL2;
+      }
       const response = await axios.post<AuthResponse>(
-        `http://${API_URL}:8000/auth/login`,
+        `http://${apiUrlToUse}:8000/auth/login`,
         {
           email,
           password,
@@ -43,11 +48,19 @@ export const loginUser =
 
 export const logoutUser = () => async (dispatch: Dispatch) => {
   try {
-    const response = await axios.post(`http://${API_URL}:8000/auth/logout`, {
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    let apiUrlToUse = API_URL;
+
+    if (API_URL2 && API_URL2.trim() !== "") {
+      apiUrlToUse = API_URL2;
+    }
+    const response = await axios.post(
+      `http://${apiUrlToUse}:8000/auth/logout`,
+      {
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
 
     if (response.status === 200) {
       dispatch(logoutSuccess());
