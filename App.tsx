@@ -114,18 +114,6 @@ function MainWithDrawerNavigation() {
           ),
         }}
       />
-      {/* <Drawer.Screen
-        name="Logout"
-        component={LogoutScreen}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={require("./assets/logout.png")} // Provide the icon for logout
-              style={{ width: 24, height: 24 }}
-            />
-          ),
-        }}
-      /> */}
     </Drawer.Navigator>
   );
 }
