@@ -1,8 +1,8 @@
 import React from "react";
-import { Image } from "react-native";
-import { Provider } from "react-redux";
+import { Image, TouchableOpacity, Text } from "react-native";
+import { Provider, useSelector, useDispatch } from "react-redux";
 import { store } from "../client/state/store";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator, DrawerItem } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import FlashMessage from "react-native-flash-message";
@@ -16,8 +16,11 @@ import Main from "./src/screen/Main";
 import Preferences from "./src/screen/Preferences";
 import Profile from "./src/screen/Profile";
 import Setting from "./src/screen/Setting";
+import Logout from "./src/screen/Logout";
+import NavigationProfile from "./src/components/NavigationProfile";
 
 const Stack = createStackNavigator();
+
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -68,6 +71,8 @@ export default function App() {
 }
 
 function MainWithDrawerNavigation() {
+  // const userData = useSelector((state: RootState) => state.auth.userData);
+  // console.log(userData);
   return (
     <Drawer.Navigator
       initialRouteName="MainScreen"
@@ -78,6 +83,11 @@ function MainWithDrawerNavigation() {
         },
       }}
     >
+      {/* <TouchableOpacity>
+      {userData && (<Text>`Welcome ${userData?.firstname}!`</Text>)
+      }
+      </TouchableOpacity> */}
+      <NavigationProfile />
       <Drawer.Screen
         name="Home"
         component={Main}
@@ -85,6 +95,18 @@ function MainWithDrawerNavigation() {
           drawerIcon: () => (
             <Image
               source={require("./assets/home.png")}
+              style={{ width: 24, height: 24 }}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          drawerIcon: () => (
+            <Image
+              source={require("./assets/user.png")}
               style={{ width: 24, height: 24 }}
             />
           ),
@@ -109,6 +131,18 @@ function MainWithDrawerNavigation() {
           drawerIcon: () => (
             <Image
               source={require("./assets/settings.png")}
+              style={{ width: 24, height: 24 }}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Logout"
+        component={Logout}
+        options={{
+          drawerIcon: () => (
+            <Image
+              source={require("./assets/logout.png")}
               style={{ width: 24, height: 24 }}
             />
           ),

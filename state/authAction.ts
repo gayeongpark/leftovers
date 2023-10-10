@@ -6,6 +6,8 @@ import { API_URL, API_URL2 } from "@env";
 interface UserData {
   email: string;
   id: string;
+  firstname: string;
+  lastname: string; 
 }
 
 interface AuthResponse {
@@ -61,7 +63,6 @@ export const logoutUser = () => async (dispatch: Dispatch) => {
         },
       }
     );
-
     if (response.status === 200) {
       dispatch(logoutSuccess());
     } else {
