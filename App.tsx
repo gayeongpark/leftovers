@@ -17,10 +17,10 @@ import Preferences from "./src/screen/Preferences";
 import Profile from "./src/screen/Profile";
 import Setting from "./src/screen/Setting";
 import Logout from "./src/screen/Logout";
-import NavigationProfile from "./src/components/NavigationProfile";
+import { RootState } from "../client/state/store";
+import AllergiesOthers from "./src/components/preferences/AllergiesOthers";
 
 const Stack = createStackNavigator();
-
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -63,6 +63,11 @@ export default function App() {
             component={EmailVerificationForResetEmail}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="AllergiesOthers"
+            component={AllergiesOthers}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
         <FlashMessage position="top" />
       </NavigationContainer>
@@ -71,83 +76,83 @@ export default function App() {
 }
 
 function MainWithDrawerNavigation() {
-  // const userData = useSelector((state: RootState) => state.auth.userData);
-  // console.log(userData);
+  const userData = useSelector((state: RootState) => state.auth.userData);
   return (
-    <Drawer.Navigator
-      initialRouteName="MainScreen"
-      screenOptions={{
-        headerTintColor: "#fdd605",
-        headerTitleStyle: {
-          fontWeight: "bold",
-        },
-      }}
-    >
-      {/* <TouchableOpacity>
-      {userData && (<Text>`Welcome ${userData?.firstname}!`</Text>)
-      }
-      </TouchableOpacity> */}
-      <NavigationProfile />
-      <Drawer.Screen
-        name="Home"
-        component={Main}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={require("./assets/home.png")}
-              style={{ width: 24, height: 24 }}
-            />
-          ),
+    <Provider store={store}>
+      <Drawer.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerTintColor: "#fdd605",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
-      />
-      <Drawer.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={require("./assets/user.png")}
-              style={{ width: 24, height: 24 }}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Preferences"
-        component={Preferences}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={require("./assets/preferences.png")}
-              style={{ width: 24, height: 24 }}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Setting"
-        component={Setting}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={require("./assets/settings.png")}
-              style={{ width: 24, height: 24 }}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Logout"
-        component={Logout}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={require("./assets/logout.png")}
-              style={{ width: 24, height: 24 }}
-            />
-          ),
-        }}
-      />
-    </Drawer.Navigator>
+      >
+        <Drawer.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/user.png")}
+                style={{ width: 24, height: 24 }}
+              />
+            ),
+            drawerLabel: userData
+              ? `Welcome ${userData.firstname}!`
+              : "No verified user",
+          }}
+        />
+        <Drawer.Screen
+          name="Home"
+          component={Main}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/home.png")}
+                style={{ width: 24, height: 24 }}
+              />
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="Preferences"
+          component={Preferences}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/preferences.png")}
+                style={{ width: 24, height: 24 }}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Setting"
+          component={Setting}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/settings.png")}
+                style={{ width: 24, height: 24 }}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Logout"
+          component={Logout}
+          options={{
+            drawerIcon: () => (
+              <Image
+                source={require("./assets/logout.png")}
+                style={{ width: 24, height: 24 }}
+              />
+            ),
+          }}
+        />
+      </Drawer.Navigator>
+    </Provider>
   );
 }

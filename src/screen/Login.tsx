@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: "#000",
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   passwordInput: {
     flex: 1,
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: "100%",
     alignItems: "center",
+    marginTop: 20,
   },
   buttonText: {
     color: "#fff",

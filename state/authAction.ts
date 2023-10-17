@@ -7,7 +7,7 @@ interface UserData {
   email: string;
   id: string;
   firstname: string;
-  lastname: string; 
+  lastname: string;
 }
 
 interface AuthResponse {
@@ -63,12 +63,16 @@ export const logoutUser = () => async (dispatch: Dispatch) => {
         },
       }
     );
+    // console.log(response.status);
     if (response.status === 200) {
       dispatch(logoutSuccess());
     } else {
       console.error("Logout failed. Server response:", response);
     }
+    // console.log(response.data)
+    return response;
   } catch (error) {
     console.error("Logout error:", error);
+    throw error;
   }
 };

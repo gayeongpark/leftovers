@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { showMessage } from "react-native-flash-message";
-import axios from "axios";
-import { API_URL } from "@env";
+// import axios from "axios";
+// import { API_URL } from "@env";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../state/authAction";
 import { useNavigation } from "@react-navigation/native";
@@ -14,7 +14,7 @@ export default function Logout() {
   const handleLogout = async () => {
     try {
       const response = await dispatch(logoutUser());
-      console.log(response.data);
+      // console.log(response);
       if (response.data) {
         showMessage({
           message: "Logout successful",
@@ -28,7 +28,7 @@ export default function Logout() {
         });
       }
     } catch (error) {
-      console.error("Login error:", error);
+      // console.error("Login error:", error);
       showMessage({
         message: "Logout failed, Please try it again!",
         type: "danger",
@@ -48,8 +48,6 @@ export default function Logout() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    // position: "absolute",
-    // bottom: 0,
     height: "100%",
     width: "100%",
     borderTopLeftRadius: 20,
