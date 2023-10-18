@@ -1,8 +1,8 @@
 import React from "react";
-import { Image, TouchableOpacity, Text } from "react-native";
-import { Provider, useSelector, useDispatch } from "react-redux";
+import { Image } from "react-native";
+import { Provider, useSelector } from "react-redux";
 import { store } from "../client/state/store";
-import { createDrawerNavigator, DrawerItem } from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import FlashMessage from "react-native-flash-message";
@@ -19,6 +19,7 @@ import Setting from "./src/screen/Setting";
 import Logout from "./src/screen/Logout";
 import { RootState } from "../client/state/store";
 import AllergiesOthers from "./src/components/preferences/AllergiesOthers";
+import CookPerference from "./src/components/preferences/CookPerference";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -66,6 +67,11 @@ export default function App() {
           <Stack.Screen
             name="AllergiesOthers"
             component={AllergiesOthers}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="CookPreference"
+            component={CookPerference}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

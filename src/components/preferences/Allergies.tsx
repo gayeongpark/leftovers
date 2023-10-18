@@ -42,10 +42,10 @@ export default function Allergies() {
     }
   };
 
-  // console.log(selectedValues);
   const handleNavigateToOthers = () => {
-    navigation.navigate("AllergiesOthers");
+    navigation.navigate("AllergiesOthers", { selectedValues });
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Set your preferences</Text>
@@ -172,7 +172,10 @@ export default function Allergies() {
           others
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.nextButton}>
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={handleNavigateToOthers}
+      >
         <Text style={styles.nextText}>Next</Text>
       </TouchableOpacity>
     </View>

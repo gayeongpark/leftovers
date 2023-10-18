@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -109,18 +109,21 @@ export default function Signup() {
           placeholder="Firstname"
           onChangeText={(text) => setFirstname(text)}
           value={firstname}
+          keyboardType="default"
         />
         <TextInput
           style={styles.input}
           placeholder="Lastname"
           onChangeText={(text) => setLastname(text)}
           value={lastname}
+          keyboardType="default"
         />
         <TextInput
           style={styles.input}
           placeholder="Email"
           onChangeText={(text) => setEmail(text)}
           value={email}
+          keyboardType="email-address"
         />
         <View style={styles.passwordContainer}>
           <TextInput
@@ -129,6 +132,7 @@ export default function Signup() {
             secureTextEntry={!isPasswordVisible}
             onChangeText={(text) => setPassword(text)}
             value={password}
+            keyboardType="default"
           />
           <TouchableOpacity
             onPress={togglePasswordVisibility}
@@ -148,6 +152,7 @@ export default function Signup() {
             secureTextEntry={!isPassword2Visible}
             onChangeText={(text) => setPassword2(text)}
             value={password2}
+            keyboardType="default"
           />
           <TouchableOpacity
             onPress={togglePassword2Visibility}

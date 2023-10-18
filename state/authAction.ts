@@ -2,6 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { loginSuccess, logoutSuccess } from "./authSlice";
 import { API_URL, API_URL2 } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface UserData {
   email: string;
@@ -40,11 +41,38 @@ export const loginUser =
       // console.log(response);
       if (response.status === 200) {
         const { accessToken, refreshToken, userData } = response.data;
+
         dispatch(loginSuccess({ accessToken, refreshToken, userData }));
         return response.data;
       }
     } catch (error) {
       console.error("Login error:", error);
+    }
+  };
+
+export const refreshAccessToken =
+  (refreshToken: string) => async (dispatch: Dispatch) => {
+    try {
+      const response = await fetch("/auth/refreshToken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const newAccessToken = data.accessToken;
+
+        dispatch(newAccessToken);
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error);
+      }
+    } catch (error) {
+      console.error("Token refresh error:", error);
+      throw error;
     }
   };
 

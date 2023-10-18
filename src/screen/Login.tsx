@@ -61,6 +61,7 @@ export default function Login() {
           autoFocus={true}
           onChangeText={(text) => setEmail(text)}
           value={email}
+          keyboardType="email-address"
         />
         <View style={styles.passwordContainer}>
           <TextInput
@@ -69,6 +70,7 @@ export default function Login() {
             secureTextEntry={!isPasswordVisible}
             onChangeText={(text) => setPassword(text)}
             value={password}
+            keyboardType="default"
           />
           <TouchableOpacity
             onPress={togglePasswordVisibility}
