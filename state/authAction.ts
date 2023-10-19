@@ -23,9 +23,9 @@ export const loginUser =
     try {
       let apiUrlToUse = API_URL;
 
-      if (API_URL2 && API_URL2.trim() !== "") {
-        apiUrlToUse = API_URL2;
-      }
+      // if (API_URL2 && API_URL2.trim() !== "") {
+      //   apiUrlToUse = API_URL2;
+      // }
       const response = await axios.post<AuthResponse>(
         `http://${apiUrlToUse}:8000/auth/login`,
         {

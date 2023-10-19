@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function Finish() {
+export default function Recipes() {
   return (
     <View>
-      <Text>This is Finish page</Text>
+      <Text>Recipes</Text>
     </View>
   )
 }

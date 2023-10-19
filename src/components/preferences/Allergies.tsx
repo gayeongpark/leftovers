@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Allergies() {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
@@ -47,7 +48,9 @@ export default function Allergies() {
   };
 
   return (
+    
     <View style={styles.container}>
+     
       <Text style={styles.title}>Set your preferences</Text>
       <Text style={styles.description}>
         Do you have allergies? Please select the ones that apply to you.
@@ -158,7 +161,7 @@ export default function Allergies() {
       </View>
       <TouchableOpacity
         style={
-          isSelectedOthers === false ? styles.button : styles.selectedButton
+          isSelectedOthers === false ? styles.othersbutton : styles.selectedButton
         }
         onPress={handleNavigateToOthers}
       >
@@ -169,12 +172,12 @@ export default function Allergies() {
               : styles.selectedButtonText
           }
         >
-          others
+          Others
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.nextButton}
-        onPress={handleNavigateToOthers}
+        onPress={() => navigation.navigate("CookPreference")}
       >
         <Text style={styles.nextText}>Next</Text>
       </TouchableOpacity>
@@ -187,17 +190,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: "100%",
     width: "100%",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+
     alignItems: "center",
     padding: 20,
+  },
+  arrow: {
+   display: "flex",
   },
   title: {
     fontSize: 29,
     fontWeight: "bold",
     marginBottom: 20,
+    alignItems: "center",
+    justifyContent:"center",
   },
-  description: { fontSize: 20, marginBottom: 20 },
+  description: { fontSize: 20, marginBottom: 20, alignItems: "center", },
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -219,6 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: "100%",
     alignItems: "center",
+    marginTop: 10,
   },
   nextButton: {
     backgroundColor: "#fdd605",

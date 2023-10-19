@@ -48,9 +48,9 @@ export default function AllergiesOthers() {
       // console.log(userData?.email);
       // console.log(userData?.id);
       // console.log(combinedValues)
-      // if (API_URL2 && API_URL2.trim() !== "") {
-      //   apiUrlToUse = API_URL2;
-      // }
+      if (API_URL2 && API_URL2.trim() !== "") {
+        apiUrlToUse = API_URL2;
+      }
       console.log(apiUrlToUse);
       const response = await axios.post(
         `http://${apiUrlToUse}:8000/preferences/allergies`,
@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: "100%",
     width: "100%",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+
     alignItems: "center",
     padding: 20,
   },
