@@ -5,10 +5,10 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  View,
 } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { GOOGLE_VISION_API_KEY } from "@env";
@@ -21,7 +21,6 @@ type DetectedObject = {
 
 export default function Main() {
   const navigation = useNavigation<any>();
-  const dispatch = useDispatch<any>();
   const [imageUrl, setImageUrl] = useState<string>("");
   const [detectedValues, setDetectedValues] = useState<DetectedObject[]>([]);
   const pickImage = async () => {
@@ -84,27 +83,19 @@ export default function Main() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Let's save leftovers!</Text>
-      {imageUrl && (
+      {imageUrl ? (
         <Image source={{ uri: imageUrl }} style={{ width: 300, height: 300 }} />
+      ) : (
+        <View style={styles.square} />
       )}
-      {/* <TouchableOpacity onPress={pickImage} style={styles.googleButton}>
-        <Text style={styles.googleButtonText}>Chose an image</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={analyzeImage} style={styles.button}>
-        <Text style={styles.buttonText}>Analyze Image</Text>
-      </TouchableOpacity> */}
       {detectedValues.length > 0 ? (
         <>
-          {/* <Text>We successfully analyzed your ingredients!</Text> */}
           <TouchableOpacity
-            onPress={() => navigation.navigate("Recipes")}
+            onPress={() => navigation.navigate("Recipes", { detectedValues })}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Generate Recipes</Text>
           </TouchableOpacity>
-          {/* {detectedValues.map((object) => (
-            <Text key={object.mid}>{object.description}</Text>
-          ))} */}
         </>
       ) : (
         <>
@@ -136,6 +127,11 @@ const styles = StyleSheet.create({
     fontSize: 29,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  square: {
+    width: 300,
+    height: 300,
+    backgroundColor: "#222327",
   },
   button: {
     backgroundColor: "#fdd605",

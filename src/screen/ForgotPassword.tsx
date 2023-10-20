@@ -17,7 +17,6 @@ export default function ForgotPassword() {
 
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
-  // const [success, setSuccess] = useState<string>("");
 
   const handleNext = async () => {
     try {
@@ -34,8 +33,6 @@ export default function ForgotPassword() {
       if (response.status === 200) {
         showMessage({
           message: response.data.message,
-          // color: "white",
-          // backgroundColor: "black",
           type: "success",
         });
         navigation.navigate("EmailVerificationForResetEmail");
