@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { showMessage } from "react-native-flash-message";
-// import axios from "axios";
-// import { API_URL } from "@env";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../state/authAction";
 import { useNavigation } from "@react-navigation/native";
@@ -20,7 +18,11 @@ export default function Logout() {
           message: "Logout successful",
           type: "success",
         });
-        navigation.navigate("Login");
+        // Replace current state with a new state
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Login" }],
+        });
       } else {
         showMessage({
           message: "Logout failed, Please try it again!",

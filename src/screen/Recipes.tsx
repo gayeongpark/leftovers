@@ -1,18 +1,21 @@
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { GiftedChat } from "react-native-gifted-chat";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CHAT_GPT_API_KEY } from "@env";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import { API_URL, API_URL2 } from "@env";
 
 type RouteParams = {
-  detectedValues: DetectedValue[]; // Change the type here to DetectedValue[]
+  detectedValues: DetectedValue[];
+};
+
+type UserPreferences = {
+  cook: string[];
+  allergies: string[];
+  diet: string[];
 };
 
 type MessageType = {
@@ -33,18 +36,49 @@ type DetectedValue = {
 };
 
 export default function Recipes() {
+  const userData = useSelector((state: RootState) => state.auth.userData);
   const route = useRoute();
   const detectedValues = (route.params as RouteParams)?.detectedValues || [];
   // console.log(detectedValues);
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [userMessage, setUserMessage] = useState("");
+  const [userMessage, setUserMessage] = useState<string>("");
+  const [userPreferences, setUserPreferences] = useState<UserPreferences>({
+    cook: [],
+    allergies: [],
+    diet: [],
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const initialMessage = `Please filter only food ingredients from ${detectedValues
-      .map((value) => value.description)
-      .join(", ")}. Generate recipes with detected values: ${detectedValues
-      .map((value) => value.description)
-      .join(", ")}`;
+    const fetchUserPreferences = async () => {
+      try {
+        let apiUrlToUse = API_URL;
+        if (API_URL2 && API_URL2.trim() !== "") {
+          apiUrlToUse = API_URL2;
+        }
+        const response = await axios.get(
+          `http://${apiUrlToUse}:8000/preferences/detailedPreferences/${userData?.id}`,
+          {
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+        );
+        // console.log(response.data);
+
+        if (response.status === 200) {
+          const { cook, allergies, diet } = response.data;
+          setUserPreferences({ cook, allergies, diet });
+        } else {
+          console.log("User not found!");
+        }
+      } catch (error) {
+        console.error("Error fetching user preferences:", error);
+      }
+    };
+
+    fetchUserPreferences();
 
     const apiResponse = async () => {
       try {
@@ -63,9 +97,15 @@ export default function Recipes() {
                   .map((value) => value.description)
                   .join(
                     ", "
-                  )} and then generate a recipe with detected values: ${detectedValues
+                  )}, and then generate a recipe with detected values: ${detectedValues
                   .map((value) => value.description)
-                  .join(", ")}`,
+                  .join(
+                    ", "
+                  )}. My preferences are: Cook style: ${userPreferences.cook.join(
+                  ", "
+                )}, Allergies: ${userPreferences.allergies.join(
+                  ", "
+                )}, Diet style: ${userPreferences.diet.join(", ")}`,
               },
             ],
             temperature: 0.3,
@@ -87,11 +127,13 @@ export default function Recipes() {
             createdAt: new Date(),
             user: {
               _id: 2,
-              name: "Recipe Bot",
+              name: "Leftover Tem",
             },
           },
         ]);
+        setIsLoading(false);
       } catch (error: any) {
+        setIsLoading(false);
         console.error("Chatbot API Error:", error);
         if (error.response) {
           console.error("Response Status:", error.response.status);
@@ -104,7 +146,7 @@ export default function Recipes() {
   }, [detectedValues]);
 
   const handleUserMessage = async () => {
-    if (userMessage.trim() === "") return; // Don't send empty messages
+    if (userMessage.trim() === "") return;
 
     const userMessageObject: MessageType = {
       _id: messages.length + 1,
@@ -116,21 +158,24 @@ export default function Recipes() {
       },
     };
 
-    // Update the state to show the user's message
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, [userMessageObject])
     );
 
     try {
-      // Check if the user's message contains keywords related to food and recipes
       if (
-        userMessage.toLowerCase().includes("food") ||
-        userMessage.toLowerCase().includes("recipe") ||
-        userMessage.toLowerCase().includes("fruit") ||
-        userMessage.toLowerCase().includes("diet") ||
-        userMessage.toLowerCase().includes("ingredient")
+        [
+          "food",
+          "recipe",
+          "fruit",
+          "diet",
+          "ingredient",
+          "allergy",
+          "allergies",
+          "cook",
+          "dish",
+        ].some((keyword) => userMessage.toLowerCase().includes(keyword))
       ) {
-        // Send the user's message to the chatbot API
         const response = await axios.post(
           "https://api.openai.com/v1/chat/completions",
           {
@@ -143,7 +188,7 @@ export default function Recipes() {
               {
                 role: "user",
                 content: userMessage,
-                detectedValues: detectedValues,
+                // detectedValues: detectedValues,
               },
             ],
           },
@@ -157,14 +202,13 @@ export default function Recipes() {
 
         const botMessage = response.data.choices[0].message.content;
 
-        // Update the state with the chatbot's response
         const botMessageObject: MessageType = {
           _id: userMessageObject._id + 1,
           text: botMessage,
           createdAt: new Date(),
           user: {
             _id: 2,
-            name: "Recipe Bot",
+            name: "Leftover Team",
           },
         };
 
@@ -172,7 +216,6 @@ export default function Recipes() {
           GiftedChat.append(previousMessages, [botMessageObject])
         );
       } else {
-        // If the user's message doesn't contain keywords, provide a default response
         const botMessageObject: MessageType = {
           _id: userMessageObject._id + 1,
           text: "I can help you find recipes or information about food. Please specify your request!",
@@ -195,40 +238,29 @@ export default function Recipes() {
       }
     }
 
-    // Clear the user's input
     setUserMessage("");
   };
 
   return (
     <View style={styles.container}>
-      <GiftedChat
-        messages={messages}
-        onSend={handleUserMessage}
-        user={{
-          _id: 1,
-        }}
-        placeholder="Type your message..."
-        alwaysShowSend
-        renderSend={(props) => (
-          <TouchableOpacity
-            style={styles.sendButton}
-            onPress={handleUserMessage}
-          >
-            <Text style={styles.sendButtonText}>Send</Text>
-          </TouchableOpacity>
-        )}
-        renderInputToolbar={(props) => (
-          <View style={styles.inputSection}>
-            <TextInput
-              {...props}
-              onChangeText={(text) => setUserMessage(text)}
-              value={userMessage}
-              placeholder="Type your message..."
-              style={styles.inputToolbar}
-            />
-          </View>
-        )}
-      />
+      {isLoading ? (
+        <View>
+          <ActivityIndicator size="large" color="blue" />
+          <Text>
+            We are now generating the reciepe accoring to the ingredients...
+          </Text>
+        </View>
+      ) : (
+        <GiftedChat
+          messages={messages}
+          onSend={handleUserMessage}
+          user={{
+            _id: 1,
+          }}
+          placeholder="Type your message..."
+          alwaysShowSend
+        />
+      )}
     </View>
   );
 }
@@ -237,6 +269,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    padding: 10,
   },
   sendButton: {
     marginRight: 10,
@@ -261,7 +294,5 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  inputSection: {
-
-  },
+  inputSection: {},
 });
