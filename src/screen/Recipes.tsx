@@ -23,7 +23,7 @@ type MessageType = {
   text: string;
   createdAt: Date;
   user: {
-    _id: number;
+    _id: any;
     name: string;
   };
 };
@@ -47,7 +47,6 @@ export default function Recipes() {
     allergies: [],
     diet: [],
   });
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -123,7 +122,7 @@ export default function Recipes() {
         setMessages([
           {
             _id: 1,
-            text: botMessage,
+            text: `Hello ${userData?.firstname}! ` + botMessage,
             createdAt: new Date(),
             user: {
               _id: 2,
@@ -143,17 +142,17 @@ export default function Recipes() {
     };
 
     apiResponse();
-  }, [detectedValues]);
+  }, []);
 
-  const handleUserMessage = async () => {
-    if (userMessage.trim() === "") return;
+  const handleUserMessage = async (newMessage: MessageType[]) => {
+    if (newMessage[0].text.trim() === "") return;
 
     const userMessageObject: MessageType = {
-      _id: messages.length + 1,
-      text: userMessage,
+      _id: messages.length + 1, // Assign a unique id
+      text: newMessage[0].text, // Extract the text from the newMessage array
       createdAt: new Date(),
       user: {
-        _id: 1,
+        _id: userData?.id, // User ID for the current user
         name: "User",
       },
     };
@@ -174,7 +173,9 @@ export default function Recipes() {
           "allergies",
           "cook",
           "dish",
-        ].some((keyword) => userMessage.toLowerCase().includes(keyword))
+          "replace",
+          "have",
+        ].some((keyword) => newMessage[0].text.toLowerCase().includes(keyword))
       ) {
         const response = await axios.post(
           "https://api.openai.com/v1/chat/completions",
@@ -187,8 +188,7 @@ export default function Recipes() {
               },
               {
                 role: "user",
-                content: userMessage,
-                // detectedValues: detectedValues,
+                content: newMessage[0].text, // Use the user's message
               },
             ],
           },
@@ -218,11 +218,11 @@ export default function Recipes() {
       } else {
         const botMessageObject: MessageType = {
           _id: userMessageObject._id + 1,
-          text: "I can help you find recipes or information about food. Please specify your request!",
+          text: "I can help you find recipes or information about food. Please specify your request on food!",
           createdAt: new Date(),
           user: {
             _id: 2,
-            name: "Recipe Bot",
+            name: "Leftover Team",
           },
         };
 
@@ -237,17 +237,19 @@ export default function Recipes() {
         console.error("Request failed:", error.message);
       }
     }
-
-    setUserMessage("");
   };
 
   return (
     <View style={styles.container}>
       {isLoading ? (
-        <View>
-          <ActivityIndicator size="large" color="blue" />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator
+            style={styles.loading}
+            size="large"
+            color="#fdd605"
+          />
           <Text>
-            We are now generating the reciepe accoring to the ingredients...
+            We are now generating the recipe according to the ingredients...
           </Text>
         </View>
       ) : (
@@ -255,7 +257,8 @@ export default function Recipes() {
           messages={messages}
           onSend={handleUserMessage}
           user={{
-            _id: 1,
+            _id: userData?.id || 1,
+            name: userData?.lastname,
           }}
           placeholder="Type your message..."
           alwaysShowSend
@@ -279,6 +282,12 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
+  loadingContainer: {
+    alignItems: "center",
+  },
+  loading: {
+    marginBottom: 10,
+  },
   sendButtonText: {
     color: "white",
     fontWeight: "bold",
@@ -294,5 +303,4 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  inputSection: {},
 });
