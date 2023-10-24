@@ -23,7 +23,7 @@ export default function Main() {
   const navigation = useNavigation<any>();
   const [imageUrl, setImageUrl] = useState<string>("");
   const [detectedValues, setDetectedValues] = useState<DetectedObject[]>([]);
-  
+
   const pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({

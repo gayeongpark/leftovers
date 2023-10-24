@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { loginSuccess, logoutSuccess } from "./authSlice";
 import { API_URL, API_URL2 } from "@env";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface UserData {
   email: string;
@@ -80,9 +80,9 @@ export const logoutUser = () => async (dispatch: Dispatch) => {
   try {
     let apiUrlToUse = API_URL;
 
-    if (API_URL2 && API_URL2.trim() !== "") {
-      apiUrlToUse = API_URL2;
-    }
+    // if (API_URL2 && API_URL2.trim() !== "") {
+    //   apiUrlToUse = API_URL2;
+    // }
     const response = await axios.post(
       `http://${apiUrlToUse}:8000/auth/logout`,
       {

@@ -120,12 +120,14 @@ export default function ConfirmEmail() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fdd605",
+    height: "100%",
+    width: "100%",
   },
   container2: {
     backgroundColor: "#fff",
     position: "absolute",
     bottom: 0,
-    height: "75%",
+    height: "80%",
     width: "100%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

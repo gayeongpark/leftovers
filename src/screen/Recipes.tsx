@@ -53,9 +53,9 @@ export default function Recipes() {
     const fetchUserPreferences = async () => {
       try {
         let apiUrlToUse = API_URL;
-        if (API_URL2 && API_URL2.trim() !== "") {
-          apiUrlToUse = API_URL2;
-        }
+        // if (API_URL2 && API_URL2.trim() !== "") {
+        //   apiUrlToUse = API_URL2;
+        // }
         const response = await axios.get(
           `http://${apiUrlToUse}:8000/preferences/detailedPreferences/${userData?.id}`,
           {
@@ -64,7 +64,7 @@ export default function Recipes() {
             },
           }
         );
-        // console.log(response.data);
+        // console.log("Preferences", response.data);
 
         if (response.status === 200) {
           const { cook, allergies, diet } = response.data;
@@ -175,6 +175,10 @@ export default function Recipes() {
           "dish",
           "replace",
           "have",
+          "thank you",
+          "appreciate",
+          "great",
+          "flavor",
         ].some((keyword) => newMessage[0].text.toLowerCase().includes(keyword))
       ) {
         const response = await axios.post(

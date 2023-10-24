@@ -1,3 +1,4 @@
+// This screen is to signup
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -16,34 +17,44 @@ import { showMessage } from "react-native-flash-message";
 import { API_URL } from "@env";
 
 export default function Signup() {
+  // useState is used for updating the previous value to the current value.
   const navigation = useNavigation<any>();
   const [firstname, setFirstname] = useState<string>("");
   const [lastname, setLastname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [password2, setPassword2] = useState<string>("");
+  // I set isPasswordVisible and isPassword2Visible are initially set to false, indicating that the password input fields are initially hidden.
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isPassword2Visible, setIsPassword2Visible] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const handleSignup = async () => {
     // console.log(`${API_URL}`);
+
+    // Validating the form
+
+    // When there are no input value on each field, it will throw the error message below.
     if (!email || !password || !password2) {
       setError("All fields are required");
       return;
     }
 
+    // when password and confirmed password are not matched, it will throw the error message below.
     if (password !== password2) {
       setError("Passwords do not match");
       return;
     }
 
+    // email string should be the email format.
+    // The test() method of RegExp instances executes a search with this regular expression for a match between a regular expression and a specified string. Returns true if there is a match; false otherwise.
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError("Invalid email format");
       return;
     }
 
+    // password string should be the password format. It is to check if the string contains at least one of the specified special characters and one digit number.
     const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).*$/;
     if (!passwordRegex.test(password)) {
       setError(
@@ -53,6 +64,7 @@ export default function Signup() {
     }
 
     try {
+      // Make a request with the given values (email, password, password2, firstname, lastname) to this endpoint using axios library.
       const response = await axios.post(
         `http://${API_URL}:8000/auth/signup`,
         {
@@ -62,6 +74,8 @@ export default function Signup() {
           firstname,
           lastname,
         },
+        // The data sent with the request is provided in the form of an object with properties email, password, password2, firstname, and lastname.
+        // The request is JSON-formatted request.
         {
           headers: {
             "content-type": "application/json",
@@ -69,6 +83,7 @@ export default function Signup() {
         }
       );
 
+      // If I could get sccussfully the respond with the 200 status, will show the success message.
       if (response.status === 200) {
         showMessage({
           message: response.data.message,
@@ -76,21 +91,29 @@ export default function Signup() {
           // backgroundColor: "black",
           type: "success",
         });
+
+        // And then I will navigate users to confirmEmail screen in order to validate the email address and then passing the email props to the component.
         navigation.navigate("ConfirmEmail", { email: email });
       } else {
         // console.error("Server error:", response.data.error);
+        // If I cannot give post request to the server, It will show the error message
         setError(response.data.error);
       }
     } catch (error) {
       console.error("Error:", error);
+      // axios networking error
       setError("An error occurred. Please try again later.");
     }
   };
 
+  // It is to make a toggle to visible or invisible of password input
   const togglePasswordVisibility = () => {
+    // If user clicks the toggle btn, setIspasswordVisible will update the isPasswordVisible to be !false, making the value true.
     setIsPasswordVisible(!isPasswordVisible);
   };
+  // It is to make a toggle to visible or invisible of password2 input
   const togglePassword2Visibility = () => {
+    // If user clicks the toggle btn, setIspassword2Visible will update the isPassword2Visible to be !false, making the value true.
     setIsPassword2Visible(!isPassword2Visible);
   };
 
@@ -172,6 +195,7 @@ export default function Signup() {
           By creating account, you confirm that you accept our Terms of Use and
           Privacy{" "}
         </Text>
+        {/* if there is update error, I am showing the error message below. */}
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
     </SafeAreaView>
