@@ -24,7 +24,7 @@ type MessageType = {
   createdAt: Date;
   user: {
     _id: any;
-    name: string;
+    name: string | undefined;
   };
 };
 
@@ -41,7 +41,6 @@ export default function Recipes() {
   const detectedValues = (route.params as RouteParams)?.detectedValues || [];
   // console.log(detectedValues);
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [userMessage, setUserMessage] = useState<string>("");
   const [userPreferences, setUserPreferences] = useState<UserPreferences>({
     cook: [],
     allergies: [],
@@ -153,7 +152,7 @@ export default function Recipes() {
       createdAt: new Date(),
       user: {
         _id: userData?.id, // User ID for the current user
-        name: "User",
+        name: userData?.lastname,
       },
     };
 

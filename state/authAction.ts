@@ -9,6 +9,7 @@ interface UserData {
   id: string;
   firstname: string;
   lastname: string;
+  profileImage: string;
 }
 
 interface AuthResponse {

@@ -79,14 +79,20 @@ export default function App() {
 
 function MainWithDrawerNavigation() {
   const userData = useSelector((state: RootState) => state.auth.userData);
+  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
+
   return (
     <Provider store={store}>
       <Drawer.Navigator
         initialRouteName="Home"
         screenOptions={{
-          headerTintColor: "#fdd605",
+          headerTintColor: isDarkMode ? "#ffff" : "#fdd605",
           headerTitleStyle: {
             fontWeight: "bold",
+            color: isDarkMode ? "#ffff" : "#fdd605",
+          },
+          headerStyle: {
+            backgroundColor: isDarkMode ? "#fdd605" : "#fff",
           },
         }}
       >

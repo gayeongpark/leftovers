@@ -7,12 +7,14 @@ import {
   ScrollView,
   View,
 } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { showMessage } from "react-native-flash-message";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { GOOGLE_VISION_API_KEY } from "@env";
 import axios from "axios";
+import { RootState } from "../../state/store";
 
 type DetectedObject = {
   description: string;
@@ -21,8 +23,12 @@ type DetectedObject = {
 
 export default function Main() {
   const navigation = useNavigation<any>();
+  const dispatch = useDispatch<any>();
+
   const [imageUrl, setImageUrl] = useState<string>("");
   const [detectedValues, setDetectedValues] = useState<DetectedObject[]>([]);
+
+  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
 
   const pickImage = async () => {
     try {
@@ -82,12 +88,19 @@ export default function Main() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Let's save leftovers!</Text>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        isDarkMode ? styles.darkContainer : null,
+      ]}
+    >
+      <Text style={[styles.title, isDarkMode ? styles.darkTitle : null]}>
+        Let's save leftovers!
+      </Text>
       {imageUrl ? (
         <Image source={{ uri: imageUrl }} style={{ width: 300, height: 300 }} />
       ) : (
-        <View style={styles.square} />
+        <View style={[styles.square, isDarkMode ? styles.darkSquare : null]} />
       )}
       {detectedValues.length > 0 ? (
         <>
@@ -101,7 +114,14 @@ export default function Main() {
       ) : (
         <>
           <TouchableOpacity onPress={pickImage} style={styles.googleButton}>
-            <Text style={styles.googleButtonText}>Chose an image</Text>
+            <Text
+              style={[
+                styles.googleButtonText,
+                isDarkMode ? styles.darkGoogleButtonText : null,
+              ]}
+            >
+              Choose an image
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={analyzeImage} style={styles.button}>
             <Text style={styles.buttonText}>Analyze Image</Text>
@@ -119,8 +139,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: "100%",
     width: "100%",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    alignItems: "center",
+    padding: 20,
+  },
+  darkContainer: {
+    backgroundColor: "#000",
+    position: "absolute",
+    bottom: 0,
+    height: "100%",
+    width: "100%",
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
     alignItems: "center",
     padding: 20,
   },
@@ -129,10 +158,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
   },
+  darkTitle: {
+    fontSize: 29,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#ffff",
+  },
   square: {
     width: 300,
     height: 300,
     backgroundColor: "#222327",
+  },
+  darkSquare: {
+    width: 300,
+    height: 300,
+    backgroundColor: "#fff",
   },
   button: {
     backgroundColor: "#fdd605",
@@ -157,7 +197,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   googleButtonText: {
-    color: "black",
+    color: "#000",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  darkGoogleButtonText: {
+    color: "#fff",
     fontWeight: "600",
     fontSize: 16,
   },

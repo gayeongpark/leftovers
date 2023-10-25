@@ -12,6 +12,7 @@ interface UserData {
   id: string;
   firstname: string;
   lastname: string;
+  profileImage: string;
 }
 
 //The reason why I did use '|' is that, in TypeScript, '|' (union type) is typically used to declare a type that can have multiple possible types (type unions).

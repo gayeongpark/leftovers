@@ -29,6 +29,7 @@ export default function Signup() {
   const [isPassword2Visible, setIsPassword2Visible] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
+  // If user click the signup btn, this function will be evoked.
   const handleSignup = async () => {
     // console.log(`${API_URL}`);
 
@@ -130,7 +131,11 @@ export default function Signup() {
         <TextInput
           style={styles.input}
           placeholder="Firstname"
+          // When the user types or edits text in the input field, the setFirstname(text) function is called.
+          // This function likely updates the firstname state variable with the new text.
+          // The onChangeText prop is used to define a callback function that is executed whenever the text in the input field changes.
           onChangeText={(text) => setFirstname(text)}
+          // It is to set the value of the input field
           value={firstname}
           keyboardType="default"
         />
@@ -161,6 +166,7 @@ export default function Signup() {
             onPress={togglePasswordVisibility}
             style={styles.eyeIcon}
           >
+            {/* If isPasswordVisible is true, 'eye-outline' will be displayed. If it is false, 'eye-off-outline' will be displayed */}
             <Ionicons
               name={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
               size={24}
