@@ -4,12 +4,11 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../state/store";
 import { API_URL, API_URL2 } from "@env";
 
@@ -24,7 +23,8 @@ export default function AllergiesOthers() {
   const route = useRoute();
 
   const navigation = useNavigation<any>();
-
+  const dispatch = useDispatch<any>();
+  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
   const selectedValues = (route.params as RouteParams)?.selectedValues || [];
 
   const handleTextInputChange = (text: string) => {
@@ -74,27 +74,27 @@ export default function AllergiesOthers() {
     }
   };
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Set your preferences</Text>
-        <Text style={styles.description}>
-          Do you have allergies? Please ect the ones that apply to you.
-        </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={handleTextInputChange}
-          value={others.join(", ")}
-          placeholder="Please input ex) fish, gluten"
-          keyboardType="default"
-        />
-        <TouchableOpacity
-          style={styles.nextButton}
-          onPress={handleAllergiesNext}
-        >
-          <Text style={styles.nextText}>Next</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={[styles.container, isDarkMode ? styles.darkContainer : null]}>
+      <Text style={[styles.title, isDarkMode ? styles.darkTitle : null]}>
+        Set your preferences
+      </Text>
+      <Text
+        style={[styles.description, isDarkMode ? styles.darkDescription : null]}
+      >
+        Do you have allergies? Please ect the ones that apply to you.
+      </Text>
+      <TextInput
+        style={[styles.input, isDarkMode ? styles.darkInput : null]}
+        onChangeText={handleTextInputChange}
+        value={others.join(", ")}
+        placeholder="Please input ex) fish, gluten"
+        placeholderTextColor={isDarkMode ? "#ccc" : "#000"}
+        keyboardType="default"
+      />
+      <TouchableOpacity style={styles.nextButton} onPress={handleAllergiesNext}>
+        <Text style={styles.nextText}>Next</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -103,7 +103,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: "100%",
     width: "100%",
-
+    alignItems: "center",
+    padding: 20,
+  },
+  darkContainer: {
+    backgroundColor: "#000",
+    height: "100%",
+    width: "100%",
     alignItems: "center",
     padding: 20,
   },
@@ -111,13 +117,34 @@ const styles = StyleSheet.create({
     fontSize: 29,
     fontWeight: "bold",
     marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  darkTitle: {
+    fontSize: 29,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#fff",
   },
   description: { fontSize: 20, marginBottom: 20 },
+  darkDescription: {
+    fontSize: 20,
+    marginBottom: 20,
+    color: "#fff",
+  },
   input: {
     width: "100%",
     padding: 10,
     borderBottomWidth: 1,
     borderColor: "#000",
+    marginBottom: 20,
+  },
+  darkInput: {
+    width: "100%",
+    padding: 10,
+    borderBottomWidth: 1,
+    color: "#fff",
+    borderColor: "#fff",
     marginBottom: 20,
   },
   nextButton: {

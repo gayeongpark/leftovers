@@ -1,10 +1,11 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../state/store";
 
 export default function CookPreference() {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-
   const [isSelecteHealthy, setIsSelectedHealthy] = useState<boolean>(false);
   const [isSelectedEasy, setIsSelectedEasy] = useState<boolean>(false);
   const [isSelectedAdventurous, setIsSelectedAdventurous] =
@@ -12,10 +13,11 @@ export default function CookPreference() {
   const [isSelectedOthers, setIsSelectedOthers] = useState<boolean>(false);
 
   const navigation = useNavigation<any>();
+  const dispatch = useDispatch<any>();
+  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
 
   const handleSelect = (value: string) => {
     const selectedValuesCopy = [...selectedValues];
-
     if (selectedValuesCopy.includes(value)) {
       setSelectedValues(selectedValuesCopy.filter((item) => item !== value));
     } else {
@@ -38,9 +40,13 @@ export default function CookPreference() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Set your preferences</Text>
-      <Text style={styles.description}>
+    <View style={[styles.container, isDarkMode ? styles.darkContainer : null]}>
+      <Text style={[styles.title, isDarkMode ? styles.darkTitle : null]}>
+        Set your preferences
+      </Text>
+      <Text
+        style={[styles.description, isDarkMode ? styles.darkDescription : null]}
+      >
         What's the most important to you when you cook?
       </Text>
       <TouchableOpacity
@@ -52,8 +58,8 @@ export default function CookPreference() {
         <Text
           style={
             isSelecteHealthy === false
-              ? styles.buttonText
-              : styles.selectedButtonText
+              ? [styles.buttonText, isDarkMode && styles.darkText]
+              : [styles.selectedButtonText, isDarkMode && styles.darkText]
           }
         >
           Healthy cook style
@@ -66,8 +72,8 @@ export default function CookPreference() {
         <Text
           style={
             isSelectedEasy === false
-              ? styles.buttonText
-              : styles.selectedButtonText
+              ? [styles.buttonText, isDarkMode && styles.darkText]
+              : [styles.selectedButtonText, isDarkMode && styles.darkText]
           }
         >
           Easy cook style
@@ -84,8 +90,8 @@ export default function CookPreference() {
         <Text
           style={
             isSelectedAdventurous === false
-              ? styles.buttonText
-              : styles.selectedButtonText
+              ? [styles.buttonText, isDarkMode && styles.darkText]
+              : [styles.selectedButtonText, isDarkMode && styles.darkText]
           }
         >
           Adventurous cook style
@@ -100,8 +106,8 @@ export default function CookPreference() {
         <Text
           style={
             isSelectedOthers === false
-              ? styles.buttonText
-              : styles.selectedButtonText
+              ? [styles.buttonText, isDarkMode && styles.darkText]
+              : [styles.selectedButtonText, isDarkMode && styles.darkText]
           }
         >
           Others
@@ -125,12 +131,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
+  darkContainer: {
+    backgroundColor: "#000",
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    padding: 20,
+  },
   title: {
     fontSize: 29,
     fontWeight: "bold",
     marginBottom: 20,
   },
+  darkTitle: {
+    fontSize: 29,
+    fontWeight: "bold",
+    marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#fff",
+  },
   description: { fontSize: 20, marginBottom: 20 },
+  darkDescription: {
+    fontSize: 20,
+    marginBottom: 20,
+    alignItems: "center",
+    color: "#fff",
+  },
   button: {
     borderColor: "#fdd605",
     borderWidth: 2,
@@ -165,6 +192,9 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "600",
     fontSize: 16,
+  },
+  darkText: {
+    color: "#fff",
   },
   selectedButton: {
     backgroundColor: "#fdd605",

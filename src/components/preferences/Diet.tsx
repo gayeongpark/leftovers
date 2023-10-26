@@ -1,6 +1,8 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../state/store";
 
 export default function Diet() {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
@@ -14,7 +16,8 @@ export default function Diet() {
   const [isSelectedOthers, setIsSelectedOthers] = useState<boolean>(false);
 
   const navigation = useNavigation<any>();
-
+  const dispatch = useDispatch<any>();
+  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
   const handleSelect = (value: string) => {
     const selectedValuesCopy = [...selectedValues];
 
@@ -44,9 +47,9 @@ export default function Diet() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Set your preferences</Text>
-      <Text style={styles.description}>
+    <View style={[styles.container, isDarkMode ? styles.darkContainer : null]}>
+      <Text style={[styles.title, isDarkMode ? styles.darkTitle : null]}>Set your preferences</Text>
+      <Text  style={[styles.description, isDarkMode ? styles.darkDescription : null]}>
         Do you have allergies? Please select the ones that apply to you.
       </Text>
       <View style={styles.rowContainer}>
@@ -171,16 +174,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
+  darkContainer: {
+    backgroundColor: "#000",
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    padding: 20,
+  },
   title: {
     fontSize: 29,
     fontWeight: "bold",
     marginBottom: 20,
   },
+  darkTitle: {
+    fontSize: 29,
+    fontWeight: "bold",
+    marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#fff",
+  },
   description: { fontSize: 20, marginBottom: 20 },
+  darkDescription: {
+    fontSize: 20,
+    marginBottom: 20,
+    alignItems: "center",
+    color: "#fff",
+  },
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
+  },
+  darkText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 16,
   },
   button: {
     borderColor: "#fdd605",
